@@ -1,0 +1,7 @@
+parameters:
+#    snappminds_contable.example.class: Snappminds\ContableBundle\Example
+
+services:
+#    snappminds_contable.example:
+#        class: %snappminds_contable.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

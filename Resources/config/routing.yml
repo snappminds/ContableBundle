@@ -1,0 +1,7 @@
+SnappmindsContableBundle_test:
+    pattern:  /test
+    defaults: { _controller: SnappmindsContableBundle:Default:test }
+    
+SnappmindsContableBundle_arbol:
+    pattern:  /arbol
+    defaults: { _controller: SnappmindsContableBundle:Default:arbol}
