@@ -167,53 +167,25 @@ class PlanDeCuentaTest extends ModelDrivenTest {
         
     }
 
-//    public function testIndex() {
-//        $em = $this->getEm();
-//
-//        $cuentas = array();
-//        $cuentas["CAJA"] = new Cuenta("CAJA");
-//        $cuentas["BANCOS_CUENTA_CORRIENTE"] = new Cuenta("BANCOS_CUENTA_CORRIENTE");
-//        $cuentas["DEPOSiTO_A_PLAZO_FIJO"] = new Cuenta("DEPOSiTO_A_PLAZO_FIJO");
-//        $cuentas["PROVEEDOR"] = new Cuenta("PROVEEDOR");
-//        $cuentas["DEUDA_IMPOSITIVA"] = new Cuenta("DEUDA_IMPOSITIVA");
-//        $cuentas["PROVISIONES_A_LARGO_PLAZO"] = new Cuenta("PROVISIONES_A_LARGO_PLAZO");
-//        $cuentas["DEUDAS_A_LARGO_PLAZO"] = new Cuenta("DEUDAS_A_LARGO_PLAZO");
-//
-//        foreach ($cuentas as $cuenta) {
-//            $em->persist($cuenta);
-//        }
-//
-//
-////        $plancuenta = new PlanDeCuenta();
-////        $plancuenta->
-//        
-//        $planDeCuenta = new PlanDeCuenta("Snappler");
-//        $planDeCuenta->addItemRaiz(
-//                new ItemPlanAgrupamiento("1", "ACTIVO", array(
-//                    new ItemPlanAgrupamiento("1.1", "CAJA Y BANCOS", array(
-//                        new ItemPlanCuenta("1.1.1", "CAJA", $cuentas["CAJA"]),
-//                        new ItemPlanCuenta("1.1.2", "BANCOS CUENTA CORRIENTE", $cuentas["BANCOS_CUENTA_CORRIENTE"]),
-//                            )),
-//                    new ItemPlanAgrupamiento("1.2", "INVERSIONES", array(
-//                        new ItemPlanCuenta("1.2.1", "DEPOSITO A PLAZO FIJO", $cuentas["DEPOSiTO_A_PLAZO_FIJO"]),
-//                            ))
-//                        ))
-//        );
-//        $planDeCuenta->addItemRaiz(
-//                new ItemPlanAgrupamiento("2", "PASIVO", array(
-//                    new ItemPlanAgrupamiento("2.1", "PASIVO CORRIENTE", array(
-//                        new ItemPlanCuenta("2.1.1", "PROVEEDORES", $cuentas["PROVEEDOR"]),
-//                        new ItemPlanCuenta("2.1.2", "DEUDAS IMPOSITIVAS", $cuentas["DEUDA_IMPOSITIVA"]),
-//                            )),
-//                    new ItemPlanAgrupamiento("2.2", "PASIVO NO CORRIENTE", array(
-//                        new ItemPlanCuenta("2.2.1", "PROVISIONES A LARGO PLAZO", $cuentas["PROVISIONES_A_LARGO_PLAZO"]),
-//                        new ItemPlanCuenta("2.2.2", "DEUDAS A LARGO PLAZO", $cuentas["DEUDAS_A_LARGO_PLAZO"]),
-//                            ))
-//                        ))
-//        );
-//
-//        $em->persist($planDeCuenta);
-//
-//        $em->flush();
-//    }
+    public function testAddSubItem() {
+        $plan = $this->createPlanDeCuenta();
+
+        $plan->addItem('1', 'Item de agrupamiento 1');
+        $plan->addItem('1.1', 'Item de agrupamiento 1.1');
+        $plan->addItem('1.1.1', 'Item de cuenta 1.1.1', $this->createCuenta('Cuenta 1.1.1'));
+        $plan->addItem('1.1.2', 'Item de cuenta 1.1.2', $this->createCuenta('Cuenta 1.1.2'));
+        $plan->addItem('1.2', 'Item de agrupamiento 1.2');
+        $plan->addItem('2', 'Item de agrupamiento 2');
+        $plan->addItem('2.1', 'Item de agrupamiento 2.1');
+        $plan->addItem('2.1.1', 'Item de agrupamiento 2.1.1');
+        $plan->addItem('2.1.2', 'Item de agrupamiento 2.1.2');
+        $plan->addSubItem('2.1', 'Item de agrupamiento Dinamico', $this->createCuenta('Cuenta 2.1.x') );
+
+        $itemPadre = $plan->getItem('2.1');                
+        $this->assertEquals('3', $itemPadre->getSubItems()->count() );
+        
+        $item = $plan->getItem('2.1.3');        
+        $this->assertEquals('Item de agrupamiento Dinamico', $item->getDescripcion() );
+    }
+    
 }

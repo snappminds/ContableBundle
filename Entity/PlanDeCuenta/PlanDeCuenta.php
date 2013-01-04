@@ -62,6 +62,30 @@ class PlanDeCuenta implements \IteratorAggregate
         else
             $this->addItemCuenta($codigo, $descripcion, $cuenta);            
     }
+
+    public function addSubItem($codigoItemPadre, $descripcion, Cuenta $cuenta = null)
+    {
+        $itemPadre = $this->getItem($codigoItemPadre);
+        
+        if( ! $itemPadre ) throw new \Exception("El código " . $codigoItemPadre . " no existe.");                    
+                
+        $maxValue = 0;
+        
+        foreach( $itemPadre->getSubItems() as $subItem ){
+            $niveles = preg_split("/\./", $subItem->getCodigo() );
+            $maxValue = max( $maxValue, $niveles[ count( $niveles ) -1  ] ) ;
+        }
+        
+        $maxValue++;
+        
+        $codigoSubItem = $codigoItemPadre . "." . $maxValue;
+        
+        /**
+         * TODO: planear distintos strategys para cuando el codigo no es numerico
+         */
+        
+        $this->addItem($codigoSubItem, $descripcion, $cuenta);
+    }
     
     public function addItemPlan($codigo, $descripcion)
     {
@@ -92,6 +116,10 @@ class PlanDeCuenta implements \IteratorAggregate
         }
     }
     
+    /**
+     * Devuelve un item del plan según un código
+     * @return Snappminds\ContableBundle\Entity\PlanDeCuenta\ItemPlan
+     */
     public function getItem($codigo)
     {
         $this->validarCodigo($codigo);
