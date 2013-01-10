@@ -17,7 +17,12 @@ class Movimiento
      * @ORM\GeneratedValue(strategy="AUTO")
      */        
     private $id;  
-        
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Asiento", inversedBy="movimientos")
+     */
+    private $asiento;
+    
     /**
      * @ORM\ManyToOne(targetEntity="Snappminds\ContableBundle\Entity\Cuenta\Cuenta")      
      */            
@@ -34,11 +39,12 @@ class Movimiento
     private $monto;
     
     
-    public function __construct(Cuenta $debe, Cuenta $haber, $monto)
+    public function __construct(Cuenta $debe, Cuenta $haber, $monto, Asiento $asiento)
     {
         $this->debe = $debe;
         $this->haber = $haber;
         $this->monto = $monto;
+        $this->asiento = $asiento;
     }
     
     public function getId()
@@ -66,4 +72,9 @@ class Movimiento
     {
         return $this->monto;
     }
+    
+    public function getAsiento()
+    {
+        return $this->asiento;
+    }    
 }

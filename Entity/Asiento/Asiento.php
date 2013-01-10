@@ -3,6 +3,8 @@
 namespace Snappminds\ContableBundle\Entity\Asiento;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Snappminds\ContableBundle\Entity\Cuenta\Cuenta;
 
 /**
@@ -25,19 +27,19 @@ class Asiento
     private $fecha;
     
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */            
     private $descripcion;
     
     /** 
-     * @ORM\ManyToOne(targetEntity="Movimiento", cascade={"persist", "delete"}) 
+     * @ORM\OneToMany(targetEntity="Movimiento", mappedBy="listaDeArticulo", cascade={"persist","remove"}) 
      */        
     private $movimientos;
     
     public function __construct()
     {
         $this->setFecha(new \DateTime());
-        $this->movimientos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->movimientos = new ArrayCollection();
     }
     
     public function getFecha()
@@ -62,16 +64,11 @@ class Asiento
     
     public function addMovimiento(Cuenta $debe, Cuenta $haber, $monto) 
     {
-        $this->movimientos[] = new Movimiento($debe, $haber, $monto);
-    }
-    
-    protected function getMovimientosCollection()
-    {
-        return $this->movimientos;
+        $this->movimientos[] = new Movimiento($debe, $haber, $monto, $this);
     }
     
     public function getMovimientos()
     {
-        return $this->getMovimientosCollection()->getIterator();
+        return $this->movimientos;
     }
 }
