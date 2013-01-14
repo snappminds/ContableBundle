@@ -32,7 +32,7 @@ class Asiento
     private $descripcion;
     
     /** 
-     * @ORM\OneToMany(targetEntity="Movimiento", mappedBy="listaDeArticulo", cascade={"persist","remove"}) 
+     * @ORM\OneToMany(targetEntity="Movimiento", mappedBy="asiento", cascade={"persist","remove"}) 
      */        
     private $movimientos;
     
