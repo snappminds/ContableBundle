@@ -41,4 +41,10 @@ class Cuenta
     {
         $this->descripcion = $descripcion;
     }    
+
+    public function __toString()
+    {
+        return $this->descripcion;
+    }    
+
 }
