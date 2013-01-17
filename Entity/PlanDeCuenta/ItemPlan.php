@@ -102,5 +102,8 @@ class ItemPlan
         else
             $this->subItems[$codigo] = $item;
     }
-    
+
+    public function accept (IItemPlanVisitor $visitor ) {
+        $visitor->visitItemPlan($this);
+    }
 }

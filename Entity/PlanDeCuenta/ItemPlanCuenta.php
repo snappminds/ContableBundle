@@ -32,5 +32,9 @@ class ItemPlanCuenta  extends ItemPlan
     {
         $this->cuenta = $cuenta;
     }
+
+    public function accept (IItemPlanVisitor $visitor ) {
+        $visitor->visitItemPlanCuenta($this);
+    }
     
 }
