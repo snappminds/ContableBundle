@@ -34,7 +34,7 @@ class ItemPlanCuenta  extends ItemPlan
     }
 
     public function accept (IItemPlanVisitor $visitor ) {
-        $visitor->visitItemPlanCuenta($this);
+        return $visitor->visitItemPlanCuenta($this);
     }
     
 }

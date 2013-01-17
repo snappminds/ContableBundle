@@ -104,6 +104,6 @@ class ItemPlan
     }
 
     public function accept (IItemPlanVisitor $visitor ) {
-        $visitor->visitItemPlan($this);
+        return $visitor->visitItemPlan($this);
     }
 }
