@@ -11,7 +11,13 @@ class PlanDeCuentaIterator implements \Iterator
     
     public function __construct($raices) 
     {
-        $raices = new \ArrayObject($raices);
+		// FIX 17/01/2013 (ldelia)
+		// Cuando se utiliza el iterador, en un ambiente en memoria, como por ejemplo un test case
+		// raices es un simple array y por lo tanto necesito pasarlo a ArrayObject
+		// Cuadno se utiliza el iterador, en un ambiente con persistencia, raices ya es objecto Doctrine\ORM\PersistentCollection
+        if ( ! is_object( $raices ) ) {
+            $raices = new \ArrayObject($raices);    
+        }
         $this->setRaices($raices);
         $this->setParentItemSubItemsIterator($raices->getIterator());
         $this->rewind();        
