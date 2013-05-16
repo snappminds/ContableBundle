@@ -34,7 +34,7 @@ class Movimiento
     private $haber;
     
     /** 
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", precision=12, scale=2)
      */     
     private $monto;
     
